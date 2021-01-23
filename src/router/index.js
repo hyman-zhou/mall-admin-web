@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+//安装路由
 Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
 
 /**
+ * 路由配置文件
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
  * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
  *                                if not set alwaysShow, only more than one route under the children
@@ -18,13 +20,14 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
  **/
+//静态路由
 export const constantRouterMap = [
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
   {path: '/404', component: () => import('@/views/404'), hidden: true},
   {
-    path: '',
-    component: Layout,
-    redirect: '/home',
+    path: '',//路由的路径
+    component: Layout,//跳转的组件
+    redirect: '/home',//重定向到home路由
     children: [{
       path: 'home',
       name: 'home',
@@ -34,6 +37,7 @@ export const constantRouterMap = [
   }
 ]
 
+//动态路由
 export const asyncRouterMap = [
   {
     path: '/pms',
@@ -358,9 +362,58 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/shms',
+    component: Layout,
+    redirect: '/shms/listshop',
+    name: 'shms',
+    meta: {title: '店铺', icon: 'shop'},
+    children: [
+      {
+        path: 'listshop',
+        name: 'listshop',
+        component: () => import('@/views/shms/shop/index'),
+        meta: {title: '店铺列表', icon: 'shop-list'}
+      },
+      {
+        path: 'addshop',
+        name: 'addshop',
+        component: () => import('@/views/shms/shop/add'),
+        meta: {title: '添加店铺', icon: 'shop-add'}
+      },
+      {
+        path: 'authshop',
+        name: 'authshop',
+        component: () => import('@/views/shms/shop/index'),
+        meta: {title: '店铺审核', icon: 'shop-auth'}
+      }
+    ]
+  },
+  {
+    path: '/abm',
+    component: Layout,
+    redirect: '/abm/memberStat',
+    name: 'abm',
+    meta: {title: '统计报表', icon: 'statistic'},
+    children: [
+      {
+        path: 'memberStat',
+        name: 'memberStat',
+        component: () => import('@/views/abm/index'),
+        meta: {title: '会员统计', icon: 'member-statistic'}
+      },
+      {
+        path: 'salesStat',
+        name: 'salesStat',
+        component: () => import('@/views/abm/index'),
+        meta: {title: '销售统计', icon: 'sales-statistic'}
+      }
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]
 
+//配置到处路由
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({y: 0}),

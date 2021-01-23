@@ -4,6 +4,9 @@ import { asyncRouterMap, constantRouterMap } from '@/router/index';
 function hasPermission(menus, route) {
   if (route.name) {
     let currMenu = getMenu(route.name, menus);
+    if(route.name === 'abm'){
+      console.log(currMenu)
+    }
     if (currMenu!=null) {
       //设置菜单的标题、图标和可见性
       if (currMenu.title != null && currMenu.title !== '') {
@@ -63,6 +66,13 @@ function compare(p){
   }
 }
 
+/**
+ * vuex
+ * @type {{mutations: {SET_ROUTERS: permission.mutations.SET_ROUTERS}, state: {routers, addRouters: []}, actions: {GenerateRoutes({commit: *}, *): Promise<unknown>}}}
+ * Mutation 用于变更Store中的数据
+ * 1、只能通过mutation变更Store数据，不可以直接操作Store中的数据
+ * 2、通过这种方式虽然操作起来稍微繁琐一些，但是可以集中监控所有数据的变化
+ */
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -74,6 +84,7 @@ const permission = {
       state.routers = constantRouterMap.concat(routers);
     }
   },
+  //生成动态路由
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
@@ -82,6 +93,7 @@ const permission = {
         const accessedRouters = asyncRouterMap.filter(v => {
           //admin帐号直接返回所有菜单
           // if(username==='admin') return true;
+         // console.log(v.name+hasPermission(menus,v))
           if (hasPermission(menus, v)) {
             if (v.children && v.children.length > 0) {
               v.children = v.children.filter(child => {

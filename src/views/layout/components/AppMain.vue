@@ -2,6 +2,7 @@
   <section class="app-main">
     <transition name="fade" mode="out-in">
       <!-- <router-view :key="key"></router-view> -->
+      <!--路由占位符-->
       <router-view></router-view>
     </transition>
   </section>

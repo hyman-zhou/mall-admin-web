@@ -9,7 +9,7 @@ const service = axios.create({
   timeout: 15000 // 请求超时时间
 })
 
-// request拦截器
+// request拦截器 为每个请求带上Authorization字段 config 为header中挂载Authorization字段
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
